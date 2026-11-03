@@ -164,7 +164,7 @@ static void paint_primary(Overlay *o, cairo_t *cr, int width, int height)
     font_draw(cr, say, bx + 3 * px, by + 3 * px, fs_mid, PAL_TEXT);
 
     /* Big countdown. */
-    char big[8];
+    char big[16];
     if (done) strcpy(big, "DONE"); else snprintf(big, sizeof big, "%02d", b->seconds_left);
     int big_w = font_measure(big, fs_big);
     int big_y = cy + cat_h + unit * 6;
@@ -204,7 +204,7 @@ static void paint_secondary(Overlay *o, cairo_t *cr, int width, int height)
     BreakSession *b = o->s;
     int unit = MAX(2, MIN(width, height) / 160);
     int fs_big = unit * 3, fs_small = unit;
-    char big[8];
+    char big[16];
     if (finished(b)) strcpy(big, "DONE"); else snprintf(big, sizeof big, "%02d", b->seconds_left);
     int bw = font_measure(big, fs_big);
     font_draw(cr, big, (width - bw) / 2, height / 2 - FONT_H * fs_big, fs_big, PAL_ACCENT);

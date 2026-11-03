@@ -25,7 +25,7 @@ gboolean settings_exists(void);
 void settings_load(Settings *s);
 void settings_save(const Settings *s);
 
-/* Autostart via ~/.config/autostart/*.desktop (freedesktop standard, no root). */
+/* Autostart via ~/.config/autostart desktop entry (freedesktop standard, no root). */
 gboolean settings_startup_enabled(void);
 void settings_set_startup(gboolean enabled);
 
