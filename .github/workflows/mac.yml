@@ -1,0 +1,45 @@
+name: macOS build
+
+on:
+  push:
+    paths:
+      - "mac/**"
+      - ".github/workflows/mac.yml"
+  pull_request:
+    paths:
+      - "mac/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain
+        run: |
+          xcodebuild -version
+          swiftc --version
+
+      - name: Build universal .app and .dmg
+        run: |
+          chmod +x mac/build.sh
+          mac/build.sh
+
+      - name: Smoke test (bundle layout + architectures)
+        run: |
+          APP="mac/dist/20-20-20.app"
+          test -f "$APP/Contents/MacOS/TwentyTwentyTwenty"
+          test -f "$APP/Contents/Resources/app.icns"
+          plutil -lint "$APP/Contents/Info.plist"
+          lipo -info "$APP/Contents/MacOS/TwentyTwentyTwenty" | grep -q arm64
+          lipo -info "$APP/Contents/MacOS/TwentyTwentyTwenty" | grep -q x86_64
+          codesign --verify --verbose "$APP"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 20-20-20-mac
+          path: |
+            mac/dist/20-20-20.app
+            mac/dist/TwentyTwentyTwenty-mac.dmg
+          if-no-files-found: error

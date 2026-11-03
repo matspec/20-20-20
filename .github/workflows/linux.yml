@@ -1,0 +1,51 @@
+name: Linux build
+
+on:
+  push:
+    paths:
+      - "linux/**"
+      - ".github/workflows/linux.yml"
+  pull_request:
+    paths:
+      - "linux/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    # Oldest LTS runner available, so the AppImage's glibc requirement stays low.
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential pkg-config libgtk-3-dev libayatana-appindicator3-dev libxss-dev \
+            libfuse2 wget desktop-file-utils xvfb
+
+      - name: appimagetool
+        run: |
+          wget -q https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+          chmod +x /usr/local/bin/appimagetool
+
+      - name: Build
+        run: make -C linux -j
+
+      - name: AppImage
+        run: make -C linux appimage
+
+      - name: Smoke test
+        run: |
+          test -x linux/build/twentytwentytwenty
+          desktop-file-validate linux/com.sadiq.twentytwentytwenty.desktop
+          ls -la linux/dist
+          xvfb-run -a linux/build/twentytwentytwenty --help | grep -q make-icons
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 20-20-20-linux
+          path: |
+            linux/dist/*.AppImage
+            linux/build/twentytwentytwenty
+          if-no-files-found: error

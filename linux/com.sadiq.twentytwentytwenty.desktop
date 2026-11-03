@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=20-20-20
+GenericName=Eye-break reminder
+Comment=A pixel cat that reminds you to look 20 feet away for 20 seconds every 20 minutes
+Exec=twentytwentytwenty
+Icon=com.sadiq.twentytwentytwenty
+Terminal=false
+Categories=Utility;Accessibility;
+Keywords=eyes;break;reminder;health;timer;
+StartupNotify=false
+X-GNOME-UsesNotifications=false

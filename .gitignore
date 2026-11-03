@@ -1,0 +1,12 @@
+# build outputs
+/build/
+/dist/
+/mac/build/
+/mac/dist/
+/linux/build/
+/linux/dist/
+*.o
+.DS_Store
+
+# the landing page lives in its own repo (matspec/20-20-20-website)
+/website/
