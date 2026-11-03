@@ -19,3 +19,7 @@ settings.ini keys and the same `.skin` text format.
 - All custom views use `isFlipped = true` so drawing code is y-down and identical to the GDI+ version.
 - "Open at login" uses SMAppService (macOS 13+); the menu item is hidden on older systems.
 - Minimum macOS: 11.0.
+
+## Commits
+
+- Never add "Generated with [Devin]" or "Co-Authored-By: Devin" trailers (or any AI attribution) to commit messages or PR descriptions in this repo.
